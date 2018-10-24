@@ -35,14 +35,16 @@ int main(int argc, char const *argv[])
     /*
         Only the struct to which the pointer was pointing changed,
         because the first struct is passed by value, which is
-        deleted the moment after the change_struct function terminates.
+        deleted the moment after the change_struct function terminates,
+        and does not affect the original struct at all.
     */
 
     print_string(play_struct.a_string);
-    char name[16] = "Lilli";
-    change_string(play_struct.a_string, &name);
+    char name[16];
+    strcpy(name, "Lilli");
+    change_string(play_struct.a_string, name);
     print_string(play_struct.a_string);
-    print_string(&name);
+    print_string(name);
     /*
         The value of the struct is not changed because the content of the
         struct is only copied at function call.
@@ -65,11 +67,11 @@ void change_struct(struct PlayStruct ps, struct PlayStruct* pps)
 {
     ps.int_value = 5;
     ps.double_value = 203.93;
-    strcpy(ps.a_string, "Schnitzel");
+    strcpy(ps.a_string, "Pizza");
 
     pps->int_value = 39;
     pps->double_value = 3.14159265359;
-    strcpy(pps->a_string, "Pizza");
+    strcpy(pps->a_string, "Schnitzel");
 }
 
 void print_string(char string_to_print[])
@@ -80,5 +82,5 @@ void print_string(char string_to_print[])
 void change_string(char string1[], char* p_string)
 {
     string1[2]  = '\0';
-    //p_string[1] = '\0';
+    p_string[1] = '\0';
 }
